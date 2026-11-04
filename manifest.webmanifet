@@ -1,0 +1,10 @@
+{
+  "name": "ENMA Gestão",
+  "short_name": "ENMA",
+  "description": "Sistema de gestão para pequenos produtores",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#B82025"
+}
