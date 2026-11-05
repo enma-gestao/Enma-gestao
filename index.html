@@ -15,6 +15,7 @@ input,select{border:1px solid #d9dce2;border-radius:10px;background:#fff;outline
 .line{align-items:center;border-bottom:1px solid #eff0f2;padding:12px 0}.line:last-child{border-bottom:0}.line small{color:#777}.total{background:linear-gradient(135deg,#202329,#343941);border-radius:15px;padding:17px}.total strong{font-size:25px}.note{border-radius:12px;line-height:1.5}.ingredient{gap:7px}.ingredient .del{border-radius:9px}.del{background:#fff0f0;border:1px solid #f5d6d6}
 #home .card:first-of-type{background:linear-gradient(135deg,#fff,#fafafa)}#home .card:first-of-type .primary{width:100%}footer{padding:24px 10px;color:#9297a0;font-size:10px}
 .backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.backup-actions button{width:100%;margin:0}.backup-help{font-size:12px;color:#747a84;margin:8px 0 0}
+.manual-product{background:#f7f8fa;border:1px solid #e1e3e7;border-radius:12px;padding:12px;margin-top:10px}.lot-tag{display:inline-block;background:#f1f2f4;border-radius:6px;padding:3px 7px;font-size:11px;color:#555;margin-bottom:5px}
 @media(max-width:420px){h1{font-size:24px}.wrap{padding-left:13px;padding-right:13px}.card{padding:14px}.tab{padding:10px 11px;font-size:13px}.metric b{font-size:19px}.ingredient{grid-template-columns:1.25fr .75fr .62fr 32px;gap:4px}}
 
 </style></head><body><header><div class="wrap" style="padding:0"><div class="logo">ENMA <span>GESTÃO</span></div><small>DISCIPLINA. ESTRATÉGIA. RESULTADO.</small></div></header><main class="wrap"><h1>Seu negócio sob controle.</h1><p class="muted">Custos e fichas técnicas para pequenos produtores.</p><nav class="tabs"><button class="tab on" data-page="home">Visão geral</button><button class="tab" data-page="inputs">Insumos</button><button class="tab" data-page="recipe">Ficha técnica</button><button class="tab" data-page="production">Produção</button></nav>
@@ -24,8 +25,8 @@ input,select{border:1px solid #d9dce2;border-radius:10px;background:#fff;outline
 <section id="production" class="hidden">
   <div class="card">
     <h2>Registrar ordem de produção</h2>
-    <p class="muted">Selecione uma receita, informe os números reais do lote e acompanhe o resultado enquanto preenche.</p>
-    <label>Receita / produto</label><select id="prodRecipe"><option value="">Selecione uma receita salva</option></select>
+    <p class="muted">Use uma ficha técnica salva ou registre um produto avulso. Cada produção recebe um número de lote e fica guardada como histórico independente.</p>
+    <label>Origem do produto</label><select id="prodRecipe"><option value="">Selecione uma ficha técnica</option><option value="manual">Cadastrar produto manualmente (sem ficha técnica)</option></select><div id="manualProductBox" class="manual-product hidden"><label>Nome do produto</label><input id="manualProductName" type="text" maxlength="80" list="manualProductOptions" placeholder="Ex.: Brownie de ninho"><datalist id="manualProductOptions"></datalist></div>
     <div class="row">
       <div><label>Data da produção</label><input id="prodDate" type="date"></div>
       <div><label>Quantidade produzida (un.)</label><input id="prodQty" type="number" min="1" step="1" value="20"></div>
@@ -40,16 +41,17 @@ input,select{border:1px solid #d9dce2;border-radius:10px;background:#fff;outline
       <small>RESULTADO REAL DA PRODUÇÃO</small>
       <div class="row"><div><small>Faturamento</small><b id="prodRevenue">R$ 0,00</b></div><div><small>Lucro / prejuízo</small><b id="prodProfit">R$ 0,00</b></div></div>
       <div class="row"><div><small>Custo por unidade produzida</small><b id="prodUnitCost">R$ 0,00</b></div><div><small>Margem real</small><b id="prodMargin">0%</b></div></div>
-      <small id="prodCompare">Selecione uma receita para comparar com o custo previsto.</small>
+      <small id="prodCompare">Selecione uma ficha técnica ou cadastre um produto manualmente.</small>
     </div>
     <button class="primary" id="saveProduction">Salvar ordem de produção</button>
   </div>
   <div class="card"><h3>Histórico e comparação</h3><p class="muted">Compare o custo e o lucro dos lotes anteriores do mesmo produto.</p><div id="productionHistory">Nenhuma produção registrada ainda.</div></div>
 </section>
-</main><footer>ENMA GESTÃO • VERSÃO 1.1</footer>
+</main><footer>ENMA GESTÃO • VERSÃO 1.3</footer>
 <script>
-const $=id=>document.getElementById(id),fmt=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),get=k=>JSON.parse(localStorage.getItem('enma_'+k)||'[]'),put=(k,v)=>localStorage.setItem('enma_'+k,JSON.stringify(v));let inputs=get('inputs'),recipes=get('recipes'),productions=get('productions'),editingIndex=null;
-function page(p){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));$(p).classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.page===p));if(p==='recipe'&&!$('ings').children.length)addRow();scrollTo(0,0)}
+const $=id=>document.getElementById(id),fmt=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),get=k=>{try{return JSON.parse(localStorage.getItem('enma_'+k)||'[]')}catch(e){console.error('Falha ao ler dados ENMA',k,e);return []}},put=(k,v)=>{try{localStorage.setItem('enma_'+k,JSON.stringify(v));return true}catch(e){console.error('Falha ao salvar dados ENMA',k,e);alert('O navegador bloqueou o armazenamento do ENMA. Verifique se está no modo anônimo e se o armazenamento do site está permitido. Exporte seus dados assim que possível.');return false}};let inputs=get('inputs'),recipes=get('recipes'),productions=get('productions'),manualProducts=get('manualProducts'),editingIndex=null;
+try{localStorage.setItem('enma_storage_test','ok');localStorage.removeItem('enma_storage_test')}catch(e){setTimeout(()=>alert('Atenção: o armazenamento deste navegador está bloqueado. O ENMA não conseguirá guardar seus cadastros neste modo.'),500)}
+function page(p){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));$(p).classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.page===p));if(p==='recipe'&&!$('ings').children.length)addRow();if(p==='production'){refreshProductionRecipes();renderProductionHistory();updateProductionPreview()}scrollTo(0,0)}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>page(b.dataset.page));
 function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){ $('nInputs').textContent=inputs.length;$('nRecipes').textContent=recipes.length;$('inputList').innerHTML=inputs.length?inputs.map((x,i)=>`<div class="line"><div><b>${safe(x.name)}</b><br><small>${x.qty} ${x.unit} • ${fmt(x.price)} • ${fmt(x.price/x.qty)}/${x.unit}</small></div><div style="display:flex;gap:5px"><button class="secondary" onclick="editInput(${i})">Editar</button><button class="secondary" onclick="delInput(${i})">Excluir</button></div></div>`).join(''):'Nenhum insumo cadastrado.';$('saved').innerHTML=recipes.length?recipes.map(x=>`<div class="line"><span><b>${safe(x.name)}</b><br><small>${x.yield} unidades • custo ${fmt(x.unitCost)}</small></span><b>${fmt(x.price)}</b></div>`).join(''):'Nenhuma receita salva.';if(recipes[0]){$('lastCost').textContent=fmt(recipes[0].batch);$('lastPrice').textContent=fmt(recipes[0].price)}}
@@ -98,14 +100,21 @@ $('cancelEdit').onclick=clearInputForm;
 $('saveInput').onclick=()=>{let name=$('iname').value.trim(),qty=+$('iqty').value,price=+$('iprice').value,unit=$('iunit').value;if(!name||qty<=0||!Number.isFinite(price)||price<0){alert('Preencha nome, quantidade e preço corretamente.');return}if(inputs.some((x,i)=>i!==editingIndex&&x.name.toLowerCase()===name.toLowerCase())){alert('Esse insumo já existe.');return}if(editingIndex!==null){inputs[editingIndex]={name,qty,price,unit};put('inputs',inputs);clearInputForm();render();refresh();calc();alert('Insumo atualizado! Os próximos cálculos usarão o novo preço.')}else{inputs.push({name,qty,price,unit});put('inputs',inputs);clearInputForm();render();refresh();alert('Insumo cadastrado!')}};
 function delInput(i){if(confirm('Excluir insumo?')){inputs.splice(i,1);put('inputs',inputs);render();refresh();calc()}}
 
-// Módulo de produção: os valores são recalculados em tempo real e salvos localmente.
+// Módulo de produção: cada lote guarda uma fotografia dos dados usados naquele dia.
 function refreshProductionRecipes(){
   const sel=$('prodRecipe'); if(!sel)return;
   const current=sel.value;
-  sel.innerHTML='<option value="">Selecione uma receita salva</option>'+recipes.map((r,i)=>`<option value="${i}">${safe(r.name)} — custo previsto ${fmt(r.batch)}</option>`).join('');
-  if(current!=='' && recipes[Number(current)])sel.value=current;
+  sel.innerHTML='<option value="">Selecione uma ficha técnica</option><option value="manual">Cadastrar produto manualmente (sem ficha técnica)</option>'+recipes.map((r,i)=>`<option value="${i}">${safe(r.name)} — custo previsto ${fmt(r.batch)}</option>`).join('');
+  if(current==='manual'||(current!==''&&recipes[Number(current)]))sel.value=current;
+  toggleManualProduct();
 }
-function selectedProductionRecipe(){const i=$('prodRecipe').value;return i===''?null:recipes[Number(i)]||null}
+function renderManualProductOptions(){const list=$('manualProductOptions');if(list)list.innerHTML=manualProducts.map(n=>`<option value="${safe(n)}"></option>`).join('')}
+function toggleManualProduct(){
+  const manual=$('prodRecipe').value==='manual';
+  $('manualProductBox').classList.toggle('hidden',!manual);
+  if(manual){$('prodCostHint').textContent='Produto avulso: informe o custo real total do lote e o preço efetivo de venda.';$('prodCompare').textContent='Produto manual: não há ficha técnica para comparar. Este lote será a primeira referência.'}
+}
+function selectedProductionRecipe(){const i=$('prodRecipe').value;return i===''||i==='manual'?null:recipes[Number(i)]||null}
 function updateProductionPreview(){
   const recipe=selectedProductionRecipe();
   const qty=Math.max(0,Number($('prodQty').value)||0);
@@ -117,50 +126,65 @@ function updateProductionPreview(){
   $('prodProfit').style.color=profit<0?'#ff9b9b':'#fff';
   $('prodUnitCost').textContent=fmt(unit);$('prodMargin').textContent=margin.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
   if(recipe){
-    const delta=cost-(Number(recipe.batch)||0);
-    const pct=recipe.batch?delta/recipe.batch*100:0;
-    const sign=delta>0?'+':'';
+    const delta=cost-(Number(recipe.batch)||0),pct=recipe.batch?delta/recipe.batch*100:0,sign=delta>0?'+':'';
     $('prodCompare').textContent=`Previsto na ficha: ${fmt(recipe.batch)}. Diferença real: ${sign}${fmt(delta)} (${sign}${pct.toLocaleString('pt-BR',{maximumFractionDigits:1})}%).`;
-    $('prodCostHint').textContent='Custo sugerido pela ficha técnica: '+fmt(recipe.batch)+'. Atualize com o gasto real deste lote.';
-  }else{
-    $('prodCompare').textContent='Selecione uma receita para comparar com o custo previsto.';
-    $('prodCostHint').textContent='Ao escolher uma receita, o custo estimado será sugerido. Ajuste para o valor que realmente gastou.';
+    $('prodCostHint').textContent='Custo sugerido pela ficha técnica: '+fmt(recipe.batch)+'. Ajuste para o gasto real deste lote.';
+  }else if($('prodRecipe').value!=='manual'){
+    $('prodCompare').textContent='Selecione uma ficha técnica ou cadastre um produto manualmente.';
+    $('prodCostHint').textContent='Escolha uma ficha técnica ou use o cadastro manual para informar o custo real.';
   }
   return {recipe,qty,sold,sale,cost,revenue,profit,unit,margin};
 }
 $('prodRecipe').onchange=()=>{
   const r=selectedProductionRecipe();
-  if(r){$('prodCost').value=Number(r.batch||0).toFixed(2);$('prodSale').value=Number(r.price||0).toFixed(2);$('prodQty').value=r.yield||1;$('prodSold').value=r.yield||1;}
-  updateProductionPreview();
+  if(r){$('prodCost').value=Number(r.batch||0).toFixed(2);$('prodSale').value=Number(r.price||0).toFixed(2);$('prodQty').value=r.yield||1;$('prodSold').value=r.yield||1;$('manualProductName').value='';}
+  else if($('prodRecipe').value==='manual'){$('prodCost').value='';$('prodSale').value='';$('prodQty').value=1;$('prodSold').value=0;}
+  toggleManualProduct();updateProductionPreview();
 };
 ['prodQty','prodSold','prodSale','prodCost'].forEach(id=>$(id).oninput=updateProductionPreview);
+$('manualProductName').oninput=updateProductionPreview;
 $('prodDate').value=new Date().toISOString().slice(0,10);
+function nextLotNumber(date){
+  const day=String(date||new Date().toISOString().slice(0,10)).replaceAll('-','');
+  const count=productions.filter(p=>(p.date||'').replaceAll('-','')===day).length+1;
+  return `ENMA-${day}-${String(count).padStart(3,'0')}`;
+}
 function renderProductionHistory(){
   const host=$('productionHistory');if(!host)return;
   if(!productions.length){host.innerHTML='Nenhuma produção registrada ainda.';return}
-  const grouped={};productions.forEach(p=>{const k=p.recipeName; (grouped[k]??=[]).push(p)});
-  host.innerHTML=productions.slice().sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(p=>{
+  host.innerHTML=productions.slice().sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).map(p=>{
     const previous=productions.filter(x=>x.recipeName===p.recipeName&&x.createdAt<p.createdAt).sort((a,b)=>b.createdAt.localeCompare(a.createdAt))[0];
     const trend=previous?`<br><small>Comparado ao lote anterior: ${p.unitCost>previous.unitCost?'custo/un. subiu':'custo/un. caiu'} ${fmt(Math.abs(p.unitCost-previous.unitCost))}</small>`:'';
-    return `<div class="line" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(p.recipeName)}</b><b style="color:${p.profit<0?'#c62828':'#16804a'}">${p.profit<0?'Prejuízo ':'Lucro '}${fmt(p.profit)}</b></div><small>${p.date} • ${p.qty} produzidas • ${p.sold} vendidas • custo ${fmt(p.cost)} • faturamento ${fmt(p.revenue)}</small>${trend}</div>`;
+    return `<div class="line" style="display:block"><div class="lot-tag">${safe(p.lotNumber||'Lote antigo')}</div><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(p.recipeName)}</b><b style="color:${p.profit<0?'#c62828':'#16804a'}">${p.profit<0?'Prejuízo ':'Lucro '}${fmt(p.profit)}</b></div><small>${safe(p.date||'')} • ${p.qty} produzidas • ${p.sold} vendidas • custo ${fmt(p.cost)} • faturamento ${fmt(p.revenue)}</small>${trend}</div>`;
   }).join('');
 }
 $('saveProduction').onclick=()=>{
-  const x=updateProductionPreview();
-  if(!x.recipe||x.qty<=0||x.sold<0||x.sold>x.qty||x.cost<=0||x.sale<0){alert('Confira receita, quantidades, custo real e preço de venda. A quantidade vendida não pode superar a produzida.');return}
-  productions.unshift({id:'prod_'+Date.now(),recipeName:x.recipe.name,recipeId:x.recipe.id||null,date:$('prodDate').value||new Date().toISOString().slice(0,10),qty:x.qty,sold:x.sold,salePrice:x.sale,cost:x.cost,revenue:x.revenue,profit:x.profit,unitCost:x.unit,margin:x.margin,recipeBatch:x.recipe.batch||0,createdAt:new Date().toISOString()});
-  put('productions',productions);renderProductionHistory();alert('Ordem de produção salva! O histórico foi atualizado.');
+  const x=updateProductionPreview(),manual=$('prodRecipe').value==='manual';
+  const productName=manual?$('manualProductName').value.trim():(x.recipe?.name||'');
+  if(!productName){alert(manual?'Informe o nome do produto.':'Selecione uma ficha técnica ou escolha o cadastro manual.');if(manual)$('manualProductName').focus();return}
+  if(x.qty<=0||!Number.isInteger(x.qty)||x.sold<0||!Number.isInteger(x.sold)||x.sold>x.qty||x.cost<=0||(x.sold>0&&x.sale<=0)){
+    alert('Confira os dados: quantidade produzida maior que zero, quantidade vendida entre zero e o total produzido, custo real maior que zero e preço de venda maior que zero quando houver vendas.');return;
+  }
+  const date=$('prodDate').value||new Date().toISOString().slice(0,10);
+  const lot={id:'prod_'+Date.now(),lotNumber:nextLotNumber(date),recipeName:productName,recipeId:x.recipe?.id||null,mode:manual?'manual':'recipe',date,qty:x.qty,sold:x.sold,salePrice:x.sale,cost:x.cost,revenue:x.revenue,profit:x.profit,unitCost:x.unit,margin:x.margin,recipeBatch:x.recipe?.batch??null,recipeUnitCost:x.recipe?.unitCost??null,recipeSnapshot:x.recipe?JSON.parse(JSON.stringify(x.recipe)):null,createdAt:new Date().toISOString()};
+  const wasKnown=manualProducts.some(n=>n.toLocaleLowerCase('pt-BR')===productName.toLocaleLowerCase('pt-BR'));
+  productions.unshift(lot);
+  if(!put('productions',productions)){productions.shift();return;}
+  if(manual&&!wasKnown){manualProducts.push(productName);if(!put('manualProducts',manualProducts)){productions.shift();put('productions',productions);manualProducts.pop();return;}renderManualProductOptions();}
+  renderProductionHistory();
+  alert(`Ordem de produção ${lot.lotNumber} salva com sucesso! O registro ficou guardado no histórico.`);
+  $('prodRecipe').value='';$('manualProductName').value='';$('prodQty').value=1;$('prodSold').value=0;$('prodSale').value='';$('prodCost').value='';toggleManualProduct();updateProductionPreview();
 };
 
-function addRow(){let d=document.createElement('div');d.className='ingredient';d.innerHTML=`<div><label>Insumo</label><select class="nm"><option value="">Selecione</option>${inputs.map(x=>`<option>${safe(x.name)}</option>`).join('')}</select></div><div><label>Qtd.</label><input class="qty" type="number" min="0" step="any" placeholder="0"></div><div><label>Un.</label><select class="unit"><option>g</option><option>ml</option><option>un</option></select></div><button class="del">×</button>`;d.querySelectorAll('input,select').forEach(x=>x.oninput=calc);d.querySelector('.del').onclick=()=>{d.remove();calc()};$('ings').append(d)}
+function addRow(){let d=document.createElement('div');d.className='ingredient';d.innerHTML=`<div><label>Insumo</label><select class="nm"><option value="">Selecione</option>${inputs.map(x=>`<option>${safe(x.name)}</option>`).join('')}</select></div><div><label>Qtd.</label><input class="qty" type="number" min="0" step="any" placeholder="0"></div><div><label>Un.</label><select class="unit"><option>g</option><option>ml</option><option>un</option></select></div><button class="del" type="button">×</button>`;const nm=d.querySelector('.nm'),unit=d.querySelector('.unit');nm.onchange=()=>{const item=inputs.find(x=>x.name===nm.value);if(item)unit.value=item.unit;calc()};d.querySelector('.qty').oninput=calc;unit.onchange=calc;d.querySelector('.del').onclick=()=>{d.remove();calc()};$('ings').append(d);if(nm.value){const item=inputs.find(x=>x.name===nm.value);if(item)unit.value=item.unit}}
 function refresh(){document.querySelectorAll('.nm').forEach(s=>{let v=s.value;s.innerHTML='<option value="">Selecione</option>'+inputs.map(x=>`<option>${safe(x.name)}</option>`).join('');s.value=v})}
 $('add').onclick=()=>{if(!inputs.length){alert('Cadastre primeiro os insumos.');page('inputs');return}addRow();calc()};
-function calc(){let ing=0,valid=true;document.querySelectorAll('.ingredient').forEach(d=>{let n=d.querySelector('.nm').value,q=+d.querySelector('.qty').value,u=d.querySelector('.unit').value;if(!n||!q)return;let x=inputs.find(z=>z.name===n);if(!x||x.unit!==u){valid=false;return}ing+=q*x.price/x.qty});let y=+$('yield').value||0,m=(+$('margin').value||0)/100,f=(+$('fee').value||0)/100,b=ing+(+$('labor').value||0)+(+$('other').value||0)+(+$('loss').value||0),uc=y?b/y:0,den=1-m-f,p=den>0?uc/den:0,pr=p*(1-f)-uc;$('batch').textContent=fmt(b);$('unitCost').textContent=fmt(uc);$('price').textContent=den>0?fmt(p):'Margem inválida';$('profit').textContent=den>0?fmt(pr):'—';return {ing,valid,y,b,uc,p,pr,m,f}}
+function calc(){let ing=0,valid=true,rows=0,problems=[];document.querySelectorAll('.ingredient').forEach((d,i)=>{let n=d.querySelector('.nm').value,q=Number(d.querySelector('.qty').value),u=d.querySelector('.unit').value;if(!n&&!q)return;if(!n||!Number.isFinite(q)||q<=0){valid=false;problems.push(`Ingrediente ${i+1}: selecione o insumo e informe uma quantidade maior que zero.`);return}let x=inputs.find(z=>z.name===n);if(!x){valid=false;problems.push(`Ingrediente ${i+1}: insumo não encontrado.`);return}if(x.unit!==u){valid=false;problems.push(`${n}: a unidade correta é ${x.unit}.`);return}rows++;ing+=q*Number(x.price||0)/Number(x.qty||1)});let y=Number($('yield').value)||0,m=(Number($('margin').value)||0)/100,f=(Number($('fee').value)||0)/100,b=ing+(Number($('labor').value)||0)+(Number($('other').value)||0)+(Number($('loss').value)||0),uc=y?b/y:0,den=1-m-f,p=den>0?uc/den:0,pr=p*(1-f)-uc;$('batch').textContent=fmt(b);$('unitCost').textContent=fmt(uc);$('price').textContent=den>0?fmt(p):'Margem inválida';$('profit').textContent=den>0?fmt(pr):'—';return {ing,valid,rows,problems,y,b,uc,p,pr,m,f}}
 ['yield','margin','fee','labor','other','loss'].forEach(id=>$(id).oninput=calc);
-$('saveRecipe').onclick=()=>{let n=$('rname').value.trim(),c=calc();if(!n||c.y<=0||!c.ing||!c.valid||c.m+c.f>=1){alert('Confira nome, rendimento, ingredientes, unidades e percentuais.');return}const recipeData={id:'rec_'+Date.now(),name:n,yield:c.y,batch:c.b,unitCost:c.uc,price:c.p,profit:c.pr,margin:c.m,fee:c.f,ingredients:[...document.querySelectorAll('.ingredient')].map(d=>({name:d.querySelector('.nm').value,qty:+d.querySelector('.qty').value,unit:d.querySelector('.unit').value})).filter(x=>x.name&&x.qty>0),savedAt:new Date().toISOString()};recipes.unshift(recipeData);put('recipes',recipes);render();refreshProductionRecipes();page('home');alert('Ficha salva!')};
+$('saveRecipe').onclick=()=>{let n=$('rname').value.trim(),c=calc();if(!n){alert('Informe o nome do produto.');$('rname').focus();return}if(c.y<=0){alert('Informe um rendimento maior que zero.');$('yield').focus();return}if(c.rows===0){alert('Adicione pelo menos um ingrediente com quantidade maior que zero.');return}if(!c.valid){alert('Não foi possível salvar:\n'+c.problems.join('\n'));return}if(c.m<0||c.f<0||c.m+c.f>=1){alert('A soma da margem e das taxas precisa ser menor que 100%.');return}const recipeData={id:'rec_'+Date.now(),name:n,yield:c.y,batch:c.b,unitCost:c.uc,price:c.p,profit:c.pr,margin:c.m,fee:c.f,ingredients:[...document.querySelectorAll('.ingredient')].map(d=>{const name=d.querySelector('.nm').value,qty=+d.querySelector('.qty').value,unit=d.querySelector('.unit').value,item=inputs.find(z=>z.name===name);return {name,qty,unit,unitCost:item&&item.qty?item.price/item.qty:0,lineCost:item&&item.qty?qty*item.price/item.qty:0,inputPackageQty:item?.qty??null,inputPackagePrice:item?.price??null}}).filter(x=>x.name&&x.qty>0),savedAt:new Date().toISOString()};recipes.unshift(recipeData);if(!put('recipes',recipes)){recipes.shift();return}render();refreshProductionRecipes();page('home');alert('Ficha salva com sucesso!')};
 // Backup local: exporta e restaura insumos e fichas técnicas.
 $('exportBackup').onclick=()=>{
-  const data={app:'ENMA Gestão',version:'1.1',exportedAt:new Date().toISOString(),inputs,recipes,productions};
+  const data={app:'ENMA Gestão',version:'1.3',exportedAt:new Date().toISOString(),inputs,recipes,productions,manualProducts};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;
   a.download='enma-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
@@ -171,11 +195,11 @@ $('importBackupFile').onchange=async e=>{
   try{const data=JSON.parse(await file.text());
     if(!data||!Array.isArray(data.inputs)||!Array.isArray(data.recipes))throw new Error('Formato inválido');
     if(!confirm('Restaurar este backup? Os insumos e receitas atuais serão substituídos.')){e.target.value='';return}
-    inputs=data.inputs;recipes=data.recipes;productions=Array.isArray(data.productions)?data.productions:[];put('inputs',inputs);put('recipes',recipes);put('productions',productions);clearInputForm();render();refresh();refreshProductionRecipes();renderProductionHistory();calc();
+    const old={inputs,recipes,productions,manualProducts};const next={inputs:data.inputs,recipes:data.recipes,productions:Array.isArray(data.productions)?data.productions:[],manualProducts:Array.isArray(data.manualProducts)?data.manualProducts:[]};if(!put('inputs',next.inputs)||!put('recipes',next.recipes)||!put('productions',next.productions)||!put('manualProducts',next.manualProducts)){put('inputs',old.inputs);put('recipes',old.recipes);put('productions',old.productions);put('manualProducts',old.manualProducts);throw new Error('Não foi possível gravar o backup no navegador')}inputs=next.inputs;recipes=next.recipes;productions=next.productions;manualProducts=next.manualProducts;clearInputForm();render();renderManualProductOptions();refresh();refreshProductionRecipes();renderProductionHistory();calc();
     alert('Backup restaurado com sucesso!');
   }catch(err){alert('Não foi possível restaurar. Selecione um backup JSON válido do ENMA.');}
   e.target.value='';
 };
-addRow();render();refreshProductionRecipes();renderProductionHistory();updateProductionPreview();
-if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+addRow();render();renderManualProductOptions();refreshProductionRecipes();renderProductionHistory();updateProductionPreview();
+if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('./sw.js?v=1.3').catch(()=>{}));
 </script></body></html>
