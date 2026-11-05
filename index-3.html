@@ -1,0 +1,182 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#202124"><link rel="manifest" href="manifest.webmanifest"><title>ENMA Gestão</title><style>
+:root{--b:#202124;--r:#c62828;--bg:#f4f4f2;--line:#ddd}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--b);font:15px system-ui}header{background:var(--b);color:white;padding:18px;position:sticky;top:0}.wrap{max-width:700px;margin:auto;padding:16px}.logo{font-size:23px;font-weight:900;letter-spacing:2px}.logo span{background:var(--r);padding:3px 7px;border-radius:4px;font-size:11px}h1{font-size:23px;margin:12px 0 4px}.muted{color:#666;font-size:13px}.tabs{display:flex;gap:8px;overflow:auto;margin:15px 0}.tab,button{border:0;border-radius:10px;padding:11px 14px;font-weight:700}.tab{background:white;border:1px solid var(--line)}.tab.on,.primary{background:var(--r);color:white}.card{background:white;border:1px solid var(--line);border-radius:15px;padding:15px;margin:12px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{background:#f5f5f5;padding:12px;border-radius:10px}.metric small{display:block;color:#666}.metric b{font-size:19px}label{display:block;font-size:12px;font-weight:700;margin:9px 0 4px}input,select{width:100%;padding:12px;border:1px solid #ccc;border-radius:9px;background:white;font:inherit}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}.primary{width:100%;margin-top:10px}.secondary{background:white;border:1px solid #ccc}.hidden{display:none}.line{padding:10px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;gap:10px}.total{background:var(--b);color:white;padding:14px;border-radius:12px;margin-top:12px}.total small{color:#ccc}.total strong{font-size:22px}.ingredient{display:grid;grid-template-columns:1.4fr .8fr .65fr 34px;gap:5px;align-items:end;margin:8px 0}.ingredient input,.ingredient select{padding:9px;font-size:13px;min-width:0}.del{background:#fce8e6;color:var(--r);height:40px}.note{background:#fff4e5;border:1px solid #eed7ac;padding:11px;border-radius:10px;font-size:12px;color:#59451d}.danger{color:var(--r)}footer{text-align:center;color:#777;font-size:10px;padding:20px;letter-spacing:1px}
+
+/* ENMA 1.0 — camada visual */
+:root{--b:#17191d;--r:#c62828;--bg:#f2f3f5;--line:#e4e6ea;--muted:#727782;--surface:#fff;--shadow:0 8px 28px rgba(20,24,32,.07)}
+body{background:linear-gradient(180deg,#eceef1 0,#f6f7f8 260px);color:var(--b);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
+header{background:linear-gradient(120deg,#17191d,#292d34);box-shadow:0 5px 22px rgba(0,0,0,.16);padding:17px 18px 19px;z-index:5}
+header .wrap{max-width:760px}.logo{font-size:26px;letter-spacing:3px}.logo span{background:var(--r);padding:4px 8px;font-size:10px;letter-spacing:1.2px}
+header small{display:block;color:#c8cbd0;font-size:10px;letter-spacing:2px;margin-top:5px}
+main.wrap{max-width:760px;padding:20px 16px 28px}h1{font-size:27px;letter-spacing:-.7px;margin:12px 0 3px}h2{font-size:18px;letter-spacing:-.2px;margin:0 0 8px}h3{font-size:15px;margin:3px 0 10px}.muted{color:var(--muted);line-height:1.5}
+.tabs{padding:5px;background:#e7e9ed;border-radius:13px;gap:5px;margin:18px 0 16px}.tab{background:transparent;border:0;white-space:nowrap;color:#626873;padding:10px 13px}.tab.on{background:#fff;color:var(--r);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.card{border:1px solid #e7e8eb;border-radius:17px;padding:17px;margin:13px 0;box-shadow:var(--shadow)}.grid{gap:10px}.metric{background:#f5f6f8;border:1px solid #eceef1;border-radius:13px;padding:14px}.metric small{font-size:11px;letter-spacing:.2px}.metric b{display:block;font-size:21px;letter-spacing:-.5px;margin-top:3px}
+button{cursor:pointer;transition:transform .12s ease,filter .12s ease}button:active{transform:scale(.98)}.primary{background:linear-gradient(135deg,#c62828,#a91e24);box-shadow:0 5px 12px rgba(198,40,40,.16)}.secondary{background:#f7f8fa;border:1px solid #e1e3e7;color:#333}.primary,.secondary{min-height:42px}
+input,select{border:1px solid #d9dce2;border-radius:10px;background:#fff;outline:none}input:focus,select:focus{border-color:#c62828;box-shadow:0 0 0 3px rgba(198,40,40,.09)}label{color:#555b65;letter-spacing:.2px}
+.line{align-items:center;border-bottom:1px solid #eff0f2;padding:12px 0}.line:last-child{border-bottom:0}.line small{color:#777}.total{background:linear-gradient(135deg,#202329,#343941);border-radius:15px;padding:17px}.total strong{font-size:25px}.note{border-radius:12px;line-height:1.5}.ingredient{gap:7px}.ingredient .del{border-radius:9px}.del{background:#fff0f0;border:1px solid #f5d6d6}
+#home .card:first-of-type{background:linear-gradient(135deg,#fff,#fafafa)}#home .card:first-of-type .primary{width:100%}footer{padding:24px 10px;color:#9297a0;font-size:10px}
+.backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.backup-actions button{width:100%;margin:0}.backup-help{font-size:12px;color:#747a84;margin:8px 0 0}
+@media(max-width:420px){h1{font-size:24px}.wrap{padding-left:13px;padding-right:13px}.card{padding:14px}.tab{padding:10px 11px;font-size:13px}.metric b{font-size:19px}.ingredient{grid-template-columns:1.25fr .75fr .62fr 32px;gap:4px}}
+
+</style></head><body><header><div class="wrap" style="padding:0"><div class="logo">ENMA <span>GESTÃO</span></div><small>DISCIPLINA. ESTRATÉGIA. RESULTADO.</small></div></header><main class="wrap"><h1>Seu negócio sob controle.</h1><p class="muted">Custos e fichas técnicas para pequenos produtores.</p><nav class="tabs"><button class="tab on" data-page="home">Visão geral</button><button class="tab" data-page="inputs">Insumos</button><button class="tab" data-page="recipe">Ficha técnica</button><button class="tab" data-page="production">Produção</button></nav>
+<section id="home"><div class="grid"><div class="metric"><small>Insumos cadastrados</small><b id="nInputs">0</b></div><div class="metric"><small>Receitas salvas</small><b id="nRecipes">0</b></div><div class="metric"><small>Último custo do lote</small><b id="lastCost">R$ 0,00</b></div><div class="metric"><small>Último preço sugerido</small><b id="lastPrice">R$ 0,00</b></div></div><div class="card"><h2>Comece por aqui</h2><p class="muted">Cadastre ingredientes, monte uma receita e calcule custo e preço sugerido.</p><button class="primary" onclick="page('inputs')">Cadastrar insumos</button><button class="primary" onclick="page('recipe')" style="background:#202124">Criar ficha técnica</button></div><div class="card"><h3>Receitas salvas</h3><div id="saved">Nenhuma receita salva.</div></div><div class="card"><h3>Segurança dos seus dados</h3><p class="muted">Faça uma cópia dos seus insumos e fichas técnicas ou restaure um backup anterior.</p><div class="backup-actions"><button class="primary" id="exportBackup">Exportar backup</button><button class="secondary" id="importBackupBtn">Restaurar backup</button></div><input id="importBackupFile" type="file" accept="application/json,.json" class="hidden"><p class="backup-help">O backup é um arquivo JSON que você pode guardar no celular ou computador.</p></div><div class="note">Seus dados ficam salvos neste navegador e aparelho. Exporte um backup regularmente e antes de limpar os dados do navegador.</div></section>
+<section id="inputs" class="hidden"><div class="card"><h2>Simulação de operação</h2><p class="muted">Adicione um conjunto de insumos fictícios para testar o cadastro e as fichas técnicas.</p><button class="secondary" id="loadDemo" style="width:100%">＋ Carregar 28 insumos de demonstração</button><p class="muted">Os preços são apenas exemplos para simulação. Revise e substitua pelos valores reais da sua operação.</p></div><div class="card"><h2>Novo insumo</h2><label>Nome</label><input id="iname" placeholder="Ex.: Farinha de trigo"><div class="row"><div><label>Quantidade comprada</label><input id="iqty" type="number" min="0" step="any" placeholder="1000"></div><div><label>Unidade-base</label><select id="iunit"><option>g</option><option>ml</option><option>un</option></select></div></div><label>Preço pago (R$)</label><input id="iprice" type="number" min="0" step=".01" placeholder="8,90"><button class="primary" id="saveInput">Salvar insumo</button><button class="secondary hidden" id="cancelEdit" style="width:100%;margin-top:8px">Cancelar edição</button><p class="muted" id="editHint">Você pode alterar o preço sempre que comprar novamente o insumo.</p></div><div class="card"><h2>Meus insumos</h2><div id="inputList">Nenhum insumo cadastrado.</div></div></section>
+<section id="recipe" class="hidden"><div class="card"><h2>Nova ficha técnica</h2><label>Nome do produto</label><input id="rname" placeholder="Ex.: Brownie tradicional"><div class="row"><div><label>Rendimento (un.)</label><input id="yield" type="number" min="1" value="20"></div><div><label>Margem desejada (%)</label><input id="margin" type="number" min="0" max="95" value="35"></div></div><div class="row"><div><label>Taxas variáveis (%)</label><input id="fee" type="number" min="0" max="95" value="5"></div><div><label>Mão de obra (R$)</label><input id="labor" type="number" min="0" step=".01" value="0"></div></div><div class="row"><div><label>Outros custos (R$)</label><input id="other" type="number" min="0" step=".01" value="0"></div><div><label>Perdas/ajustes (R$)</label><input id="loss" type="number" min="0" step=".01" value="0"></div></div><h3>Ingredientes e embalagens</h3><div id="ings"></div><button class="secondary" id="add">+ Adicionar ingrediente</button><div class="total"><small>CUSTO TOTAL DO LOTE</small><div><strong id="batch">R$ 0,00</strong></div><div class="row"><div><small>Custo por unidade</small><b id="unitCost">R$ 0,00</b></div><div><small>Preço sugerido</small><b id="price">R$ 0,00</b></div></div><small>Lucro estimado por unidade</small><div><b id="profit">R$ 0,00</b></div></div><p class="muted">Preço sugerido = custo unitário ÷ (1 − margem − taxas).</p><button class="primary" id="saveRecipe">Salvar ficha técnica</button></div><div class="note">A margem é calculada sobre o preço de venda. Inclua impostos, custos fixos e outras despesas na sua análise.</div></section>
+<section id="production" class="hidden">
+  <div class="card">
+    <h2>Registrar ordem de produção</h2>
+    <p class="muted">Selecione uma receita, informe os números reais do lote e acompanhe o resultado enquanto preenche.</p>
+    <label>Receita / produto</label><select id="prodRecipe"><option value="">Selecione uma receita salva</option></select>
+    <div class="row">
+      <div><label>Data da produção</label><input id="prodDate" type="date"></div>
+      <div><label>Quantidade produzida (un.)</label><input id="prodQty" type="number" min="1" step="1" value="20"></div>
+    </div>
+    <div class="row">
+      <div><label>Quantidade vendida (un.)</label><input id="prodSold" type="number" min="0" step="1" value="20"></div>
+      <div><label>Preço de venda por unidade (R$)</label><input id="prodSale" type="number" min="0" step=".01" placeholder="0,00"></div>
+    </div>
+    <label>Custo real total do lote (R$)</label><input id="prodCost" type="number" min="0" step=".01" placeholder="Ingredientes + embalagens + mão de obra + outros">
+    <p class="muted" id="prodCostHint">Ao escolher uma receita, o custo estimado será sugerido. Ajuste para o valor que realmente gastou.</p>
+    <div class="total">
+      <small>RESULTADO REAL DA PRODUÇÃO</small>
+      <div class="row"><div><small>Faturamento</small><b id="prodRevenue">R$ 0,00</b></div><div><small>Lucro / prejuízo</small><b id="prodProfit">R$ 0,00</b></div></div>
+      <div class="row"><div><small>Custo por unidade produzida</small><b id="prodUnitCost">R$ 0,00</b></div><div><small>Margem real</small><b id="prodMargin">0%</b></div></div>
+      <small id="prodCompare">Selecione uma receita para comparar com o custo previsto.</small>
+    </div>
+    <button class="primary" id="saveProduction">Salvar ordem de produção</button>
+  </div>
+  <div class="card"><h3>Histórico e comparação</h3><p class="muted">Compare o custo e o lucro dos lotes anteriores do mesmo produto.</p><div id="productionHistory">Nenhuma produção registrada ainda.</div></div>
+</section>
+</main><footer>ENMA GESTÃO • VERSÃO 1.2</footer>
+<script>
+const $=id=>document.getElementById(id),fmt=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),get=k=>{try{return JSON.parse(localStorage.getItem('enma_'+k)||'[]')}catch(e){console.error('Falha ao ler dados ENMA',k,e);return []}},put=(k,v)=>{try{localStorage.setItem('enma_'+k,JSON.stringify(v));return true}catch(e){console.error('Falha ao salvar dados ENMA',k,e);alert('O navegador bloqueou o armazenamento do ENMA. Verifique se está no modo anônimo e se o armazenamento do site está permitido. Exporte seus dados assim que possível.');return false}};let inputs=get('inputs'),recipes=get('recipes'),productions=get('productions'),editingIndex=null;
+try{localStorage.setItem('enma_storage_test','ok');localStorage.removeItem('enma_storage_test')}catch(e){setTimeout(()=>alert('Atenção: o armazenamento deste navegador está bloqueado. O ENMA não conseguirá guardar seus cadastros neste modo.'),500)}
+function page(p){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));$(p).classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.page===p));if(p==='recipe'&&!$('ings').children.length)addRow();scrollTo(0,0)}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>page(b.dataset.page));
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){ $('nInputs').textContent=inputs.length;$('nRecipes').textContent=recipes.length;$('inputList').innerHTML=inputs.length?inputs.map((x,i)=>`<div class="line"><div><b>${safe(x.name)}</b><br><small>${x.qty} ${x.unit} • ${fmt(x.price)} • ${fmt(x.price/x.qty)}/${x.unit}</small></div><div style="display:flex;gap:5px"><button class="secondary" onclick="editInput(${i})">Editar</button><button class="secondary" onclick="delInput(${i})">Excluir</button></div></div>`).join(''):'Nenhum insumo cadastrado.';$('saved').innerHTML=recipes.length?recipes.map(x=>`<div class="line"><span><b>${safe(x.name)}</b><br><small>${x.yield} unidades • custo ${fmt(x.unitCost)}</small></span><b>${fmt(x.price)}</b></div>`).join(''):'Nenhuma receita salva.';if(recipes[0]){$('lastCost').textContent=fmt(recipes[0].batch);$('lastPrice').textContent=fmt(recipes[0].price)}}
+const demoInputs = [
+  {name:"Farinha de trigo",qty:5000,price:24.90,unit:"g"},
+  {name:"Açúcar refinado",qty:5000,price:19.90,unit:"g"},
+  {name:"Açúcar mascavo",qty:1000,price:8.90,unit:"g"},
+  {name:"Açúcar demerara",qty:1000,price:7.90,unit:"g"},
+  {name:"Chocolate em pó 50%",qty:1000,price:32.90,unit:"g"},
+  {name:"Cacau em pó 100%",qty:500,price:29.90,unit:"g"},
+  {name:"Chocolate meio amargo",qty:1000,price:39.90,unit:"g"},
+  {name:"Chocolate branco",qty:1000,price:42.90,unit:"g"},
+  {name:"Manteiga",qty:1000,price:32.90,unit:"g"},
+  {name:"Margarina",qty:1000,price:14.90,unit:"g"},
+  {name:"Ovos",qty:30,price:21.90,unit:"un"},
+  {name:"Leite integral",qty:1000,price:5.49,unit:"ml"},
+  {name:"Leite condensado",qty:395,price:6.49,unit:"g"},
+  {name:"Creme de leite",qty:200,price:3.49,unit:"g"},
+  {name:"Fermento químico",qty:100,price:4.50,unit:"g"},
+  {name:"Bicarbonato de sódio",qty:100,price:3.50,unit:"g"},
+  {name:"Sal",qty:1000,price:2.50,unit:"g"},
+  {name:"Óleo de soja",qty:900,price:7.49,unit:"ml"},
+  {name:"Essência de baunilha",qty:30,price:5.90,unit:"ml"},
+  {name:"Amendoim",qty:1000,price:16.90,unit:"g"},
+  {name:"Coco ralado",qty:1000,price:24.90,unit:"g"},
+  {name:"Morango",qty:1000,price:18.90,unit:"g"},
+  {name:"Banana",qty:1000,price:6.90,unit:"g"},
+  {name:"Café solúvel",qty:100,price:9.90,unit:"g"},
+  {name:"Embalagem para brownie",qty:100,price:39.90,unit:"un"},
+  {name:"Pote 250 ml",qty:50,price:29.90,unit:"un"},
+  {name:"Etiqueta adesiva",qty:100,price:12.90,unit:"un"},
+  {name:"Sacola kraft",qty:100,price:24.90,unit:"un"}
+];
+$('loadDemo').onclick=()=>{
+  const existing=new Set(inputs.map(x=>x.name.toLowerCase()));
+  const fresh=demoInputs.filter(x=>!existing.has(x.name.toLowerCase()));
+  if(!fresh.length){alert('Os insumos de demonstração já estão cadastrados. Você pode editar ou excluir os itens na lista.');return}
+  if(!confirm(`Adicionar ${fresh.length} insumos de demonstração? Os cadastros existentes não serão alterados.`))return;
+  inputs.push(...fresh); put('inputs',inputs); render(); refresh();
+  alert(`${fresh.length} insumos adicionados. Preços de exemplo: revise antes de usar em uma operação real.`);
+};
+
+function clearInputForm(){editingIndex=null;$('iname').value=$('iqty').value=$('iprice').value='';$('iunit').value='g';$('saveInput').textContent='Salvar insumo';$('cancelEdit').classList.add('hidden');$('editHint').textContent='Você pode alterar o preço sempre que comprar novamente o insumo.'}
+function editInput(i){let x=inputs[i];editingIndex=i;$('iname').value=x.name;$('iqty').value=x.qty;$('iprice').value=x.price;$('iunit').value=x.unit;$('saveInput').textContent='Atualizar insumo';$('cancelEdit').classList.remove('hidden');$('editHint').textContent='Modo de edição: altere o preço, a quantidade comprada, a unidade ou o nome.';window.scrollTo(0,0)}
+$('cancelEdit').onclick=clearInputForm;
+$('saveInput').onclick=()=>{let name=$('iname').value.trim(),qty=+$('iqty').value,price=+$('iprice').value,unit=$('iunit').value;if(!name||qty<=0||!Number.isFinite(price)||price<0){alert('Preencha nome, quantidade e preço corretamente.');return}if(inputs.some((x,i)=>i!==editingIndex&&x.name.toLowerCase()===name.toLowerCase())){alert('Esse insumo já existe.');return}if(editingIndex!==null){inputs[editingIndex]={name,qty,price,unit};put('inputs',inputs);clearInputForm();render();refresh();calc();alert('Insumo atualizado! Os próximos cálculos usarão o novo preço.')}else{inputs.push({name,qty,price,unit});put('inputs',inputs);clearInputForm();render();refresh();alert('Insumo cadastrado!')}};
+function delInput(i){if(confirm('Excluir insumo?')){inputs.splice(i,1);put('inputs',inputs);render();refresh();calc()}}
+
+// Módulo de produção: os valores são recalculados em tempo real e salvos localmente.
+function refreshProductionRecipes(){
+  const sel=$('prodRecipe'); if(!sel)return;
+  const current=sel.value;
+  sel.innerHTML='<option value="">Selecione uma receita salva</option>'+recipes.map((r,i)=>`<option value="${i}">${safe(r.name)} — custo previsto ${fmt(r.batch)}</option>`).join('');
+  if(current!=='' && recipes[Number(current)])sel.value=current;
+}
+function selectedProductionRecipe(){const i=$('prodRecipe').value;return i===''?null:recipes[Number(i)]||null}
+function updateProductionPreview(){
+  const recipe=selectedProductionRecipe();
+  const qty=Math.max(0,Number($('prodQty').value)||0);
+  const sold=Math.max(0,Number($('prodSold').value)||0);
+  const sale=Math.max(0,Number($('prodSale').value)||0);
+  const cost=Math.max(0,Number($('prodCost').value)||0);
+  const revenue=sold*sale,profit=revenue-cost,unit=qty?cost/qty:0,margin=revenue?profit/revenue*100:0;
+  $('prodRevenue').textContent=fmt(revenue);$('prodProfit').textContent=fmt(profit);
+  $('prodProfit').style.color=profit<0?'#ff9b9b':'#fff';
+  $('prodUnitCost').textContent=fmt(unit);$('prodMargin').textContent=margin.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
+  if(recipe){
+    const delta=cost-(Number(recipe.batch)||0);
+    const pct=recipe.batch?delta/recipe.batch*100:0;
+    const sign=delta>0?'+':'';
+    $('prodCompare').textContent=`Previsto na ficha: ${fmt(recipe.batch)}. Diferença real: ${sign}${fmt(delta)} (${sign}${pct.toLocaleString('pt-BR',{maximumFractionDigits:1})}%).`;
+    $('prodCostHint').textContent='Custo sugerido pela ficha técnica: '+fmt(recipe.batch)+'. Atualize com o gasto real deste lote.';
+  }else{
+    $('prodCompare').textContent='Selecione uma receita para comparar com o custo previsto.';
+    $('prodCostHint').textContent='Ao escolher uma receita, o custo estimado será sugerido. Ajuste para o valor que realmente gastou.';
+  }
+  return {recipe,qty,sold,sale,cost,revenue,profit,unit,margin};
+}
+$('prodRecipe').onchange=()=>{
+  const r=selectedProductionRecipe();
+  if(r){$('prodCost').value=Number(r.batch||0).toFixed(2);$('prodSale').value=Number(r.price||0).toFixed(2);$('prodQty').value=r.yield||1;$('prodSold').value=r.yield||1;}
+  updateProductionPreview();
+};
+['prodQty','prodSold','prodSale','prodCost'].forEach(id=>$(id).oninput=updateProductionPreview);
+$('prodDate').value=new Date().toISOString().slice(0,10);
+function renderProductionHistory(){
+  const host=$('productionHistory');if(!host)return;
+  if(!productions.length){host.innerHTML='Nenhuma produção registrada ainda.';return}
+  const grouped={};productions.forEach(p=>{const k=p.recipeName; (grouped[k]??=[]).push(p)});
+  host.innerHTML=productions.slice().sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(p=>{
+    const previous=productions.filter(x=>x.recipeName===p.recipeName&&x.createdAt<p.createdAt).sort((a,b)=>b.createdAt.localeCompare(a.createdAt))[0];
+    const trend=previous?`<br><small>Comparado ao lote anterior: ${p.unitCost>previous.unitCost?'custo/un. subiu':'custo/un. caiu'} ${fmt(Math.abs(p.unitCost-previous.unitCost))}</small>`:'';
+    return `<div class="line" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(p.recipeName)}</b><b style="color:${p.profit<0?'#c62828':'#16804a'}">${p.profit<0?'Prejuízo ':'Lucro '}${fmt(p.profit)}</b></div><small>${p.date} • ${p.qty} produzidas • ${p.sold} vendidas • custo ${fmt(p.cost)} • faturamento ${fmt(p.revenue)}</small>${trend}</div>`;
+  }).join('');
+}
+$('saveProduction').onclick=()=>{
+  const x=updateProductionPreview();
+  if(!x.recipe||x.qty<=0||x.sold<0||x.sold>x.qty||x.cost<=0||x.sale<0){alert('Confira receita, quantidades, custo real e preço de venda. A quantidade vendida não pode superar a produzida.');return}
+  productions.unshift({id:'prod_'+Date.now(),recipeName:x.recipe.name,recipeId:x.recipe.id||null,date:$('prodDate').value||new Date().toISOString().slice(0,10),qty:x.qty,sold:x.sold,salePrice:x.sale,cost:x.cost,revenue:x.revenue,profit:x.profit,unitCost:x.unit,margin:x.margin,recipeBatch:x.recipe.batch||0,createdAt:new Date().toISOString()});
+  put('productions',productions);renderProductionHistory();alert('Ordem de produção salva! O histórico foi atualizado.');
+};
+
+function addRow(){let d=document.createElement('div');d.className='ingredient';d.innerHTML=`<div><label>Insumo</label><select class="nm"><option value="">Selecione</option>${inputs.map(x=>`<option>${safe(x.name)}</option>`).join('')}</select></div><div><label>Qtd.</label><input class="qty" type="number" min="0" step="any" placeholder="0"></div><div><label>Un.</label><select class="unit"><option>g</option><option>ml</option><option>un</option></select></div><button class="del" type="button">×</button>`;const nm=d.querySelector('.nm'),unit=d.querySelector('.unit');nm.onchange=()=>{const item=inputs.find(x=>x.name===nm.value);if(item)unit.value=item.unit;calc()};d.querySelector('.qty').oninput=calc;unit.onchange=calc;d.querySelector('.del').onclick=()=>{d.remove();calc()};$('ings').append(d);if(nm.value){const item=inputs.find(x=>x.name===nm.value);if(item)unit.value=item.unit}}
+function refresh(){document.querySelectorAll('.nm').forEach(s=>{let v=s.value;s.innerHTML='<option value="">Selecione</option>'+inputs.map(x=>`<option>${safe(x.name)}</option>`).join('');s.value=v})}
+$('add').onclick=()=>{if(!inputs.length){alert('Cadastre primeiro os insumos.');page('inputs');return}addRow();calc()};
+function calc(){let ing=0,valid=true,rows=0,problems=[];document.querySelectorAll('.ingredient').forEach((d,i)=>{let n=d.querySelector('.nm').value,q=Number(d.querySelector('.qty').value),u=d.querySelector('.unit').value;if(!n&&!q)return;if(!n||!Number.isFinite(q)||q<=0){valid=false;problems.push(`Ingrediente ${i+1}: selecione o insumo e informe uma quantidade maior que zero.`);return}let x=inputs.find(z=>z.name===n);if(!x){valid=false;problems.push(`Ingrediente ${i+1}: insumo não encontrado.`);return}if(x.unit!==u){valid=false;problems.push(`${n}: a unidade correta é ${x.unit}.`);return}rows++;ing+=q*Number(x.price||0)/Number(x.qty||1)});let y=Number($('yield').value)||0,m=(Number($('margin').value)||0)/100,f=(Number($('fee').value)||0)/100,b=ing+(Number($('labor').value)||0)+(Number($('other').value)||0)+(Number($('loss').value)||0),uc=y?b/y:0,den=1-m-f,p=den>0?uc/den:0,pr=p*(1-f)-uc;$('batch').textContent=fmt(b);$('unitCost').textContent=fmt(uc);$('price').textContent=den>0?fmt(p):'Margem inválida';$('profit').textContent=den>0?fmt(pr):'—';return {ing,valid,rows,problems,y,b,uc,p,pr,m,f}}
+['yield','margin','fee','labor','other','loss'].forEach(id=>$(id).oninput=calc);
+$('saveRecipe').onclick=()=>{let n=$('rname').value.trim(),c=calc();if(!n){alert('Informe o nome do produto.');$('rname').focus();return}if(c.y<=0){alert('Informe um rendimento maior que zero.');$('yield').focus();return}if(c.rows===0){alert('Adicione pelo menos um ingrediente com quantidade maior que zero.');return}if(!c.valid){alert('Não foi possível salvar:\n'+c.problems.join('\n'));return}if(c.m<0||c.f<0||c.m+c.f>=1){alert('A soma da margem e das taxas precisa ser menor que 100%.');return}const recipeData={id:'rec_'+Date.now(),name:n,yield:c.y,batch:c.b,unitCost:c.uc,price:c.p,profit:c.pr,margin:c.m,fee:c.f,ingredients:[...document.querySelectorAll('.ingredient')].map(d=>({name:d.querySelector('.nm').value,qty:+d.querySelector('.qty').value,unit:d.querySelector('.unit').value})).filter(x=>x.name&&x.qty>0),savedAt:new Date().toISOString()};recipes.unshift(recipeData);if(!put('recipes',recipes)){recipes.shift();return}render();refreshProductionRecipes();page('home');alert('Ficha salva com sucesso!')};
+// Backup local: exporta e restaura insumos e fichas técnicas.
+$('exportBackup').onclick=()=>{
+  const data={app:'ENMA Gestão',version:'1.2',exportedAt:new Date().toISOString(),inputs,recipes,productions};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;
+  a.download='enma-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
+};
+$('importBackupBtn').onclick=()=>$('importBackupFile').click();
+$('importBackupFile').onchange=async e=>{
+  const file=e.target.files&&e.target.files[0];if(!file)return;
+  try{const data=JSON.parse(await file.text());
+    if(!data||!Array.isArray(data.inputs)||!Array.isArray(data.recipes))throw new Error('Formato inválido');
+    if(!confirm('Restaurar este backup? Os insumos e receitas atuais serão substituídos.')){e.target.value='';return}
+    inputs=data.inputs;recipes=data.recipes;productions=Array.isArray(data.productions)?data.productions:[];put('inputs',inputs);put('recipes',recipes);put('productions',productions);clearInputForm();render();refresh();refreshProductionRecipes();renderProductionHistory();calc();
+    alert('Backup restaurado com sucesso!');
+  }catch(err){alert('Não foi possível restaurar. Selecione um backup JSON válido do ENMA.');}
+  e.target.value='';
+};
+addRow();render();refreshProductionRecipes();renderProductionHistory();updateProductionPreview();
+if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script></body></html>
