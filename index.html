@@ -17,12 +17,38 @@ input,select{border:1px solid #d9dce2;border-radius:10px;background:#fff;outline
 .backup-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.backup-actions button{width:100%;margin:0}.backup-help{font-size:12px;color:#747a84;margin:8px 0 0}
 @media(max-width:420px){h1{font-size:24px}.wrap{padding-left:13px;padding-right:13px}.card{padding:14px}.tab{padding:10px 11px;font-size:13px}.metric b{font-size:19px}.ingredient{grid-template-columns:1.25fr .75fr .62fr 32px;gap:4px}}
 
-</style></head><body><header><div class="wrap" style="padding:0"><div class="logo">ENMA <span>GESTÃO</span></div><small>DISCIPLINA. ESTRATÉGIA. RESULTADO.</small></div></header><main class="wrap"><h1>Seu negócio sob controle.</h1><p class="muted">Custos e fichas técnicas para pequenos produtores.</p><nav class="tabs"><button class="tab on" data-page="home">Visão geral</button><button class="tab" data-page="inputs">Insumos</button><button class="tab" data-page="recipe">Ficha técnica</button></nav>
+</style></head><body><header><div class="wrap" style="padding:0"><div class="logo">ENMA <span>GESTÃO</span></div><small>DISCIPLINA. ESTRATÉGIA. RESULTADO.</small></div></header><main class="wrap"><h1>Seu negócio sob controle.</h1><p class="muted">Custos e fichas técnicas para pequenos produtores.</p><nav class="tabs"><button class="tab on" data-page="home">Visão geral</button><button class="tab" data-page="inputs">Insumos</button><button class="tab" data-page="recipe">Ficha técnica</button><button class="tab" data-page="production">Produção</button></nav>
 <section id="home"><div class="grid"><div class="metric"><small>Insumos cadastrados</small><b id="nInputs">0</b></div><div class="metric"><small>Receitas salvas</small><b id="nRecipes">0</b></div><div class="metric"><small>Último custo do lote</small><b id="lastCost">R$ 0,00</b></div><div class="metric"><small>Último preço sugerido</small><b id="lastPrice">R$ 0,00</b></div></div><div class="card"><h2>Comece por aqui</h2><p class="muted">Cadastre ingredientes, monte uma receita e calcule custo e preço sugerido.</p><button class="primary" onclick="page('inputs')">Cadastrar insumos</button><button class="primary" onclick="page('recipe')" style="background:#202124">Criar ficha técnica</button></div><div class="card"><h3>Receitas salvas</h3><div id="saved">Nenhuma receita salva.</div></div><div class="card"><h3>Segurança dos seus dados</h3><p class="muted">Faça uma cópia dos seus insumos e fichas técnicas ou restaure um backup anterior.</p><div class="backup-actions"><button class="primary" id="exportBackup">Exportar backup</button><button class="secondary" id="importBackupBtn">Restaurar backup</button></div><input id="importBackupFile" type="file" accept="application/json,.json" class="hidden"><p class="backup-help">O backup é um arquivo JSON que você pode guardar no celular ou computador.</p></div><div class="note">Seus dados ficam salvos neste navegador e aparelho. Exporte um backup regularmente e antes de limpar os dados do navegador.</div></section>
 <section id="inputs" class="hidden"><div class="card"><h2>Simulação de operação</h2><p class="muted">Adicione um conjunto de insumos fictícios para testar o cadastro e as fichas técnicas.</p><button class="secondary" id="loadDemo" style="width:100%">＋ Carregar 28 insumos de demonstração</button><p class="muted">Os preços são apenas exemplos para simulação. Revise e substitua pelos valores reais da sua operação.</p></div><div class="card"><h2>Novo insumo</h2><label>Nome</label><input id="iname" placeholder="Ex.: Farinha de trigo"><div class="row"><div><label>Quantidade comprada</label><input id="iqty" type="number" min="0" step="any" placeholder="1000"></div><div><label>Unidade-base</label><select id="iunit"><option>g</option><option>ml</option><option>un</option></select></div></div><label>Preço pago (R$)</label><input id="iprice" type="number" min="0" step=".01" placeholder="8,90"><button class="primary" id="saveInput">Salvar insumo</button><button class="secondary hidden" id="cancelEdit" style="width:100%;margin-top:8px">Cancelar edição</button><p class="muted" id="editHint">Você pode alterar o preço sempre que comprar novamente o insumo.</p></div><div class="card"><h2>Meus insumos</h2><div id="inputList">Nenhum insumo cadastrado.</div></div></section>
-<section id="recipe" class="hidden"><div class="card"><h2>Nova ficha técnica</h2><label>Nome do produto</label><input id="rname" placeholder="Ex.: Brownie tradicional"><div class="row"><div><label>Rendimento (un.)</label><input id="yield" type="number" min="1" value="20"></div><div><label>Margem desejada (%)</label><input id="margin" type="number" min="0" max="95" value="35"></div></div><div class="row"><div><label>Taxas variáveis (%)</label><input id="fee" type="number" min="0" max="95" value="5"></div><div><label>Mão de obra (R$)</label><input id="labor" type="number" min="0" step=".01" value="0"></div></div><div class="row"><div><label>Outros custos (R$)</label><input id="other" type="number" min="0" step=".01" value="0"></div><div><label>Perdas/ajustes (R$)</label><input id="loss" type="number" min="0" step=".01" value="0"></div></div><h3>Ingredientes e embalagens</h3><div id="ings"></div><button class="secondary" id="add">+ Adicionar ingrediente</button><div class="total"><small>CUSTO TOTAL DO LOTE</small><div><strong id="batch">R$ 0,00</strong></div><div class="row"><div><small>Custo por unidade</small><b id="unitCost">R$ 0,00</b></div><div><small>Preço sugerido</small><b id="price">R$ 0,00</b></div></div><small>Lucro estimado por unidade</small><div><b id="profit">R$ 0,00</b></div></div><p class="muted">Preço sugerido = custo unitário ÷ (1 − margem − taxas).</p><button class="primary" id="saveRecipe">Salvar ficha técnica</button></div><div class="note">A margem é calculada sobre o preço de venda. Inclua impostos, custos fixos e outras despesas na sua análise.</div></section></main><footer>ENMA GESTÃO • VERSÃO 1.0</footer>
+<section id="recipe" class="hidden"><div class="card"><h2>Nova ficha técnica</h2><label>Nome do produto</label><input id="rname" placeholder="Ex.: Brownie tradicional"><div class="row"><div><label>Rendimento (un.)</label><input id="yield" type="number" min="1" value="20"></div><div><label>Margem desejada (%)</label><input id="margin" type="number" min="0" max="95" value="35"></div></div><div class="row"><div><label>Taxas variáveis (%)</label><input id="fee" type="number" min="0" max="95" value="5"></div><div><label>Mão de obra (R$)</label><input id="labor" type="number" min="0" step=".01" value="0"></div></div><div class="row"><div><label>Outros custos (R$)</label><input id="other" type="number" min="0" step=".01" value="0"></div><div><label>Perdas/ajustes (R$)</label><input id="loss" type="number" min="0" step=".01" value="0"></div></div><h3>Ingredientes e embalagens</h3><div id="ings"></div><button class="secondary" id="add">+ Adicionar ingrediente</button><div class="total"><small>CUSTO TOTAL DO LOTE</small><div><strong id="batch">R$ 0,00</strong></div><div class="row"><div><small>Custo por unidade</small><b id="unitCost">R$ 0,00</b></div><div><small>Preço sugerido</small><b id="price">R$ 0,00</b></div></div><small>Lucro estimado por unidade</small><div><b id="profit">R$ 0,00</b></div></div><p class="muted">Preço sugerido = custo unitário ÷ (1 − margem − taxas).</p><button class="primary" id="saveRecipe">Salvar ficha técnica</button></div><div class="note">A margem é calculada sobre o preço de venda. Inclua impostos, custos fixos e outras despesas na sua análise.</div></section>
+<section id="production" class="hidden">
+  <div class="card">
+    <h2>Registrar ordem de produção</h2>
+    <p class="muted">Selecione uma receita, informe os números reais do lote e acompanhe o resultado enquanto preenche.</p>
+    <label>Receita / produto</label><select id="prodRecipe"><option value="">Selecione uma receita salva</option></select>
+    <div class="row">
+      <div><label>Data da produção</label><input id="prodDate" type="date"></div>
+      <div><label>Quantidade produzida (un.)</label><input id="prodQty" type="number" min="1" step="1" value="20"></div>
+    </div>
+    <div class="row">
+      <div><label>Quantidade vendida (un.)</label><input id="prodSold" type="number" min="0" step="1" value="20"></div>
+      <div><label>Preço de venda por unidade (R$)</label><input id="prodSale" type="number" min="0" step=".01" placeholder="0,00"></div>
+    </div>
+    <label>Custo real total do lote (R$)</label><input id="prodCost" type="number" min="0" step=".01" placeholder="Ingredientes + embalagens + mão de obra + outros">
+    <p class="muted" id="prodCostHint">Ao escolher uma receita, o custo estimado será sugerido. Ajuste para o valor que realmente gastou.</p>
+    <div class="total">
+      <small>RESULTADO REAL DA PRODUÇÃO</small>
+      <div class="row"><div><small>Faturamento</small><b id="prodRevenue">R$ 0,00</b></div><div><small>Lucro / prejuízo</small><b id="prodProfit">R$ 0,00</b></div></div>
+      <div class="row"><div><small>Custo por unidade produzida</small><b id="prodUnitCost">R$ 0,00</b></div><div><small>Margem real</small><b id="prodMargin">0%</b></div></div>
+      <small id="prodCompare">Selecione uma receita para comparar com o custo previsto.</small>
+    </div>
+    <button class="primary" id="saveProduction">Salvar ordem de produção</button>
+  </div>
+  <div class="card"><h3>Histórico e comparação</h3><p class="muted">Compare o custo e o lucro dos lotes anteriores do mesmo produto.</p><div id="productionHistory">Nenhuma produção registrada ainda.</div></div>
+</section>
+</main><footer>ENMA GESTÃO • VERSÃO 1.1</footer>
 <script>
-const $=id=>document.getElementById(id),fmt=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),get=k=>JSON.parse(localStorage.getItem('enma_'+k)||'[]'),put=(k,v)=>localStorage.setItem('enma_'+k,JSON.stringify(v));let inputs=get('inputs'),recipes=get('recipes'),editingIndex=null;
+const $=id=>document.getElementById(id),fmt=n=>Number(n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}),get=k=>JSON.parse(localStorage.getItem('enma_'+k)||'[]'),put=(k,v)=>localStorage.setItem('enma_'+k,JSON.stringify(v));let inputs=get('inputs'),recipes=get('recipes'),productions=get('productions'),editingIndex=null;
 function page(p){document.querySelectorAll('main section').forEach(x=>x.classList.add('hidden'));$(p).classList.remove('hidden');document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('on',x.dataset.page===p));if(p==='recipe'&&!$('ings').children.length)addRow();scrollTo(0,0)}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>page(b.dataset.page));
 function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
@@ -71,15 +97,70 @@ function editInput(i){let x=inputs[i];editingIndex=i;$('iname').value=x.name;$('
 $('cancelEdit').onclick=clearInputForm;
 $('saveInput').onclick=()=>{let name=$('iname').value.trim(),qty=+$('iqty').value,price=+$('iprice').value,unit=$('iunit').value;if(!name||qty<=0||!Number.isFinite(price)||price<0){alert('Preencha nome, quantidade e preço corretamente.');return}if(inputs.some((x,i)=>i!==editingIndex&&x.name.toLowerCase()===name.toLowerCase())){alert('Esse insumo já existe.');return}if(editingIndex!==null){inputs[editingIndex]={name,qty,price,unit};put('inputs',inputs);clearInputForm();render();refresh();calc();alert('Insumo atualizado! Os próximos cálculos usarão o novo preço.')}else{inputs.push({name,qty,price,unit});put('inputs',inputs);clearInputForm();render();refresh();alert('Insumo cadastrado!')}};
 function delInput(i){if(confirm('Excluir insumo?')){inputs.splice(i,1);put('inputs',inputs);render();refresh();calc()}}
+
+// Módulo de produção: os valores são recalculados em tempo real e salvos localmente.
+function refreshProductionRecipes(){
+  const sel=$('prodRecipe'); if(!sel)return;
+  const current=sel.value;
+  sel.innerHTML='<option value="">Selecione uma receita salva</option>'+recipes.map((r,i)=>`<option value="${i}">${safe(r.name)} — custo previsto ${fmt(r.batch)}</option>`).join('');
+  if(current!=='' && recipes[Number(current)])sel.value=current;
+}
+function selectedProductionRecipe(){const i=$('prodRecipe').value;return i===''?null:recipes[Number(i)]||null}
+function updateProductionPreview(){
+  const recipe=selectedProductionRecipe();
+  const qty=Math.max(0,Number($('prodQty').value)||0);
+  const sold=Math.max(0,Number($('prodSold').value)||0);
+  const sale=Math.max(0,Number($('prodSale').value)||0);
+  const cost=Math.max(0,Number($('prodCost').value)||0);
+  const revenue=sold*sale,profit=revenue-cost,unit=qty?cost/qty:0,margin=revenue?profit/revenue*100:0;
+  $('prodRevenue').textContent=fmt(revenue);$('prodProfit').textContent=fmt(profit);
+  $('prodProfit').style.color=profit<0?'#ff9b9b':'#fff';
+  $('prodUnitCost').textContent=fmt(unit);$('prodMargin').textContent=margin.toLocaleString('pt-BR',{maximumFractionDigits:1})+'%';
+  if(recipe){
+    const delta=cost-(Number(recipe.batch)||0);
+    const pct=recipe.batch?delta/recipe.batch*100:0;
+    const sign=delta>0?'+':'';
+    $('prodCompare').textContent=`Previsto na ficha: ${fmt(recipe.batch)}. Diferença real: ${sign}${fmt(delta)} (${sign}${pct.toLocaleString('pt-BR',{maximumFractionDigits:1})}%).`;
+    $('prodCostHint').textContent='Custo sugerido pela ficha técnica: '+fmt(recipe.batch)+'. Atualize com o gasto real deste lote.';
+  }else{
+    $('prodCompare').textContent='Selecione uma receita para comparar com o custo previsto.';
+    $('prodCostHint').textContent='Ao escolher uma receita, o custo estimado será sugerido. Ajuste para o valor que realmente gastou.';
+  }
+  return {recipe,qty,sold,sale,cost,revenue,profit,unit,margin};
+}
+$('prodRecipe').onchange=()=>{
+  const r=selectedProductionRecipe();
+  if(r){$('prodCost').value=Number(r.batch||0).toFixed(2);$('prodSale').value=Number(r.price||0).toFixed(2);$('prodQty').value=r.yield||1;$('prodSold').value=r.yield||1;}
+  updateProductionPreview();
+};
+['prodQty','prodSold','prodSale','prodCost'].forEach(id=>$(id).oninput=updateProductionPreview);
+$('prodDate').value=new Date().toISOString().slice(0,10);
+function renderProductionHistory(){
+  const host=$('productionHistory');if(!host)return;
+  if(!productions.length){host.innerHTML='Nenhuma produção registrada ainda.';return}
+  const grouped={};productions.forEach(p=>{const k=p.recipeName; (grouped[k]??=[]).push(p)});
+  host.innerHTML=productions.slice().sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).map(p=>{
+    const previous=productions.filter(x=>x.recipeName===p.recipeName&&x.createdAt<p.createdAt).sort((a,b)=>b.createdAt.localeCompare(a.createdAt))[0];
+    const trend=previous?`<br><small>Comparado ao lote anterior: ${p.unitCost>previous.unitCost?'custo/un. subiu':'custo/un. caiu'} ${fmt(Math.abs(p.unitCost-previous.unitCost))}</small>`:'';
+    return `<div class="line" style="display:block"><div style="display:flex;justify-content:space-between;gap:8px"><b>${safe(p.recipeName)}</b><b style="color:${p.profit<0?'#c62828':'#16804a'}">${p.profit<0?'Prejuízo ':'Lucro '}${fmt(p.profit)}</b></div><small>${p.date} • ${p.qty} produzidas • ${p.sold} vendidas • custo ${fmt(p.cost)} • faturamento ${fmt(p.revenue)}</small>${trend}</div>`;
+  }).join('');
+}
+$('saveProduction').onclick=()=>{
+  const x=updateProductionPreview();
+  if(!x.recipe||x.qty<=0||x.sold<0||x.sold>x.qty||x.cost<=0||x.sale<0){alert('Confira receita, quantidades, custo real e preço de venda. A quantidade vendida não pode superar a produzida.');return}
+  productions.unshift({id:'prod_'+Date.now(),recipeName:x.recipe.name,recipeId:x.recipe.id||null,date:$('prodDate').value||new Date().toISOString().slice(0,10),qty:x.qty,sold:x.sold,salePrice:x.sale,cost:x.cost,revenue:x.revenue,profit:x.profit,unitCost:x.unit,margin:x.margin,recipeBatch:x.recipe.batch||0,createdAt:new Date().toISOString()});
+  put('productions',productions);renderProductionHistory();alert('Ordem de produção salva! O histórico foi atualizado.');
+};
+
 function addRow(){let d=document.createElement('div');d.className='ingredient';d.innerHTML=`<div><label>Insumo</label><select class="nm"><option value="">Selecione</option>${inputs.map(x=>`<option>${safe(x.name)}</option>`).join('')}</select></div><div><label>Qtd.</label><input class="qty" type="number" min="0" step="any" placeholder="0"></div><div><label>Un.</label><select class="unit"><option>g</option><option>ml</option><option>un</option></select></div><button class="del">×</button>`;d.querySelectorAll('input,select').forEach(x=>x.oninput=calc);d.querySelector('.del').onclick=()=>{d.remove();calc()};$('ings').append(d)}
 function refresh(){document.querySelectorAll('.nm').forEach(s=>{let v=s.value;s.innerHTML='<option value="">Selecione</option>'+inputs.map(x=>`<option>${safe(x.name)}</option>`).join('');s.value=v})}
 $('add').onclick=()=>{if(!inputs.length){alert('Cadastre primeiro os insumos.');page('inputs');return}addRow();calc()};
 function calc(){let ing=0,valid=true;document.querySelectorAll('.ingredient').forEach(d=>{let n=d.querySelector('.nm').value,q=+d.querySelector('.qty').value,u=d.querySelector('.unit').value;if(!n||!q)return;let x=inputs.find(z=>z.name===n);if(!x||x.unit!==u){valid=false;return}ing+=q*x.price/x.qty});let y=+$('yield').value||0,m=(+$('margin').value||0)/100,f=(+$('fee').value||0)/100,b=ing+(+$('labor').value||0)+(+$('other').value||0)+(+$('loss').value||0),uc=y?b/y:0,den=1-m-f,p=den>0?uc/den:0,pr=p*(1-f)-uc;$('batch').textContent=fmt(b);$('unitCost').textContent=fmt(uc);$('price').textContent=den>0?fmt(p):'Margem inválida';$('profit').textContent=den>0?fmt(pr):'—';return {ing,valid,y,b,uc,p,pr,m,f}}
 ['yield','margin','fee','labor','other','loss'].forEach(id=>$(id).oninput=calc);
-$('saveRecipe').onclick=()=>{let n=$('rname').value.trim(),c=calc();if(!n||c.y<=0||!c.ing||!c.valid||c.m+c.f>=1){alert('Confira nome, rendimento, ingredientes, unidades e percentuais.');return}recipes.unshift({name:n,yield:c.y,batch:c.b,unitCost:c.uc,price:c.p,profit:c.pr});put('recipes',recipes);render();page('home');alert('Ficha salva!')};
+$('saveRecipe').onclick=()=>{let n=$('rname').value.trim(),c=calc();if(!n||c.y<=0||!c.ing||!c.valid||c.m+c.f>=1){alert('Confira nome, rendimento, ingredientes, unidades e percentuais.');return}const recipeData={id:'rec_'+Date.now(),name:n,yield:c.y,batch:c.b,unitCost:c.uc,price:c.p,profit:c.pr,margin:c.m,fee:c.f,ingredients:[...document.querySelectorAll('.ingredient')].map(d=>({name:d.querySelector('.nm').value,qty:+d.querySelector('.qty').value,unit:d.querySelector('.unit').value})).filter(x=>x.name&&x.qty>0),savedAt:new Date().toISOString()};recipes.unshift(recipeData);put('recipes',recipes);render();refreshProductionRecipes();page('home');alert('Ficha salva!')};
 // Backup local: exporta e restaura insumos e fichas técnicas.
 $('exportBackup').onclick=()=>{
-  const data={app:'ENMA Gestão',version:'1.0',exportedAt:new Date().toISOString(),inputs,recipes};
+  const data={app:'ENMA Gestão',version:'1.1',exportedAt:new Date().toISOString(),inputs,recipes,productions};
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;
   a.download='enma-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
@@ -90,11 +171,11 @@ $('importBackupFile').onchange=async e=>{
   try{const data=JSON.parse(await file.text());
     if(!data||!Array.isArray(data.inputs)||!Array.isArray(data.recipes))throw new Error('Formato inválido');
     if(!confirm('Restaurar este backup? Os insumos e receitas atuais serão substituídos.')){e.target.value='';return}
-    inputs=data.inputs;recipes=data.recipes;put('inputs',inputs);put('recipes',recipes);clearInputForm();render();refresh();calc();
+    inputs=data.inputs;recipes=data.recipes;productions=Array.isArray(data.productions)?data.productions:[];put('inputs',inputs);put('recipes',recipes);put('productions',productions);clearInputForm();render();refresh();refreshProductionRecipes();renderProductionHistory();calc();
     alert('Backup restaurado com sucesso!');
   }catch(err){alert('Não foi possível restaurar. Selecione um backup JSON válido do ENMA.');}
   e.target.value='';
 };
-addRow();render();
+addRow();render();refreshProductionRecipes();renderProductionHistory();updateProductionPreview();
 if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script></body></html>
