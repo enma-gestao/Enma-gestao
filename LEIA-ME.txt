@@ -1,0 +1,29 @@
+ENMA GESTÃO — VERSÃO 1.2
+
+NOVIDADES
+- Nova aba Produção para registrar ordens/lotes realizados.
+- Seleção de uma ficha técnica salva para preencher custo previsto e preço sugerido.
+- Registro da quantidade produzida, quantidade vendida, preço real de venda e custo real total.
+- Cálculo em tempo real de faturamento, lucro/prejuízo, custo por unidade e margem real.
+- Comparação do custo real do lote com o custo previsto na ficha técnica.
+- Histórico de produções, com comparação do custo unitário com o lote anterior do mesmo produto.
+- Backup agora inclui também o histórico de produção. Backups antigos continuam podendo ser restaurados.
+- Correção do salvamento de fichas técnicas: a unidade do insumo é selecionada automaticamente.
+- Validações agora informam exatamente o campo que precisa ser corrigido.
+- Verificação de disponibilidade do armazenamento local do navegador.
+
+COMO USAR
+1. Abra Ficha técnica e salve uma receita.
+2. Abra Produção e selecione a receita.
+3. Informe data, quantidade produzida e vendida, preço de venda e custo real total do lote.
+4. Confira o resultado em tempo real e toque em Salvar ordem de produção.
+5. Registre os próximos lotes para comparar a evolução.
+
+IMPORTANTE
+- O custo real total deve incluir tudo o que foi gasto no lote: ingredientes, embalagens, mão de obra, taxas/custos aplicáveis e perdas.
+- O lucro exibido é faturamento das unidades vendidas menos o custo total informado do lote. Se parte da produção ficar em estoque, o cálculo é conservador, pois considera o custo total do lote contra as vendas realizadas.
+- Os dados permanecem no navegador e aparelho. Exporte backups regularmente.
+- A versão 1.1 não sincroniza automaticamente entre aparelhos e não possui login/nuvem.
+
+PUBLICAÇÃO
+Substitua os arquivos index.html, sw.js e LEIA-ME.txt pelos arquivos desta versão. Mantenha o manifest.webmanifest e os ícones existentes. O cache foi atualizado para enma-gestao-v1-2.
